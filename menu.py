@@ -113,8 +113,8 @@ class proc_mgr(object):
             cmd = "sudo reboot"
             subprocess.run(shlex.split(cmd), shell = False )            
         elif selection == "2":
-            pm.block_cursor()
-            sys.exit()
+            self.block_cursor()
+            self.exit_out()
         else:
             self.main_menu()
     
