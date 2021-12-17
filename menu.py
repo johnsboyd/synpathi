@@ -73,7 +73,7 @@ class proc_mgr(object):
                     self.pproc.wait()
                     self.pproc = None
                 with open("pdout.log","wb") as err:
-                    cmd = 'puredata -nogui {} {} -open {}'.format(self.midiin, self.midiout, preset[selection][1])
+                    cmd = 'puredata -rt -nogui {} {} -open {}'.format(self.midiin, self.midiout, preset[selection][1])
                     self.pproc = subprocess.Popen(shlex.split(cmd),stderr=err,shell=False)
                     self.last = preset[selection][1]
             self.d.tailbox("pdout.log", height=12, width=24, title=preset[selection][1], exit_label="ok", no_cancel=True, no_shadow=True)
