@@ -93,24 +93,26 @@ class proc_mgr(object):
 			self.pproc.terminate()
 			self.pproc.wait()
 			self.pproc = None
-		if os.path.exists("pdout.log"):
-			os.remove("pdout.log")
+        if os.path.exists("pdout.log"):
+            os.remove("pdout.log")
 
-	def turn_off(self):
-		selection = self.d.msgbox("You can halt, reboot or esc", height=12, width=24, ok_label="halt", help_button=True, help_label=" reboot ", no_shadow=True, title=
-"Shutdown")
-		if selection == "ok":
-			self.exit_out()
+    def turn_off(self):
+        code, selection = self.d.menu("options:",height = 12, width = 24, choices=[('0','Halt'),('1','Reboot'),('2','Exit')], no_ok=True, no_cancel=False, no_shadow=True)
+        if selection == "0":
+            self.exit_out()
 			self.d.infobox("Unplug the pi after the green LED goes out", height=12, width=24, title="Message", no_shadow=True )
 			time.sleep( 3 )
 			cmd = "sudo halt"
 			subprocess.run(shlex.split(cmd), shell = False )			
-		elif selection == "help":
-			self.exit_out()
-			self.d.infobox("Rebooting...", height=12, width=24, title="Message", no_shadow=True )
-			time.sleep( 2 )
-			cmd = "sudo reboot"
-			subprocess.run(shlex.split(cmd), shell = False )			
+        elif selection == "1":
+            self.exit_out()
+            self.d.infobox("Rebooting...", height=12, width=24, title="Message", no_shadow=True )
+            time.sleep( 2 )
+            cmd = "sudo reboot"
+            subprocess.run(shlex.split(cmd), shell = False )			
+        elif selection == "2":
+            pm.block_cursor()
+            sys.exit()
 		else:
 			self.main_menu()
 	
