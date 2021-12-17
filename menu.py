@@ -97,7 +97,9 @@ class proc_mgr(object):
             os.remove("pdout.log")
 
     def turn_off(self):
-        code, selection = self.d.menu("options:",height = 12, width = 24, choices=[('0','Halt'),('1','Reboot'),('2','Exit')], no_ok=True, no_cancel=False, no_shadow=True)
+        code, selection = self.d.menu("options:",height = 12, width = 24, 
+			choices=[('0','Halt'),('1','Reboot'),('2','Exit')], 
+			no_ok=True, no_cancel=False, no_shadow=True)
         if selection == "0":
             self.exit_out()
 			self.d.infobox("Unplug the pi after the green LED goes out", height=12, width=24, title="Message", no_shadow=True )
