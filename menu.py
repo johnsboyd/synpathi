@@ -21,8 +21,9 @@ class proc_mgr(object):
 		# symlink all midi devices
 		no=1
 		for devname in mididev:
-			if not os.path.islink('/dev/midi' + str(no)):
-				os.symlink('/dev/snd/' + devname,'/dev/midi' + str(no))
+			if not os.path.exists('/dev/midi' + str(no)):
+				cmd = "sudo ln -s /dev/snd/{} /dev/midi{}".format(devname,str(no))
+				subprocess.run(shlex.split(cmd), shell = False )			
 			no += 1
 		# set midi options
 		if no == 2:
@@ -39,10 +40,11 @@ class proc_mgr(object):
 		buttons = 'Up                Ok\n\n\n\n      Synpathi\n\n\n\n\nDown             Esc'
 		self.d.infobox(buttons, height=12, width=24, no_shadow=True, no_collapse=True )
 		time.sleep( 2 )
+		self.main_menu()
 
 	def main_menu(self):
 		code, selection = self.d.menu("select function:", height = 12, width = 24,
-			choices=[('0','Load'), ('1','Info'), ('2','Halt'), ('3','Exit')],
+			choices=[('0','Load'), ('1','Info'), ('2','Keys'), ('3','Halt'), ('4','Exit')],
 			no_ok=True, no_cancel=True, no_shadow=True)
 		if code == self.d.OK:
 			if selection == '0':
@@ -50,6 +52,8 @@ class proc_mgr(object):
 			elif selection == '1':
 				self.show_info()
 			elif selection == '2':
+				self.splash()
+			elif selection == '3':
 				self.turn_off()
 			elif selection == '3':
 				self.exit_out()
@@ -99,13 +103,13 @@ class proc_mgr(object):
 			self.exit_out()
 			self.d.infobox("Unplug the pi after the green LED goes out", height=12, width=24, title="Message", no_shadow=True )
 			time.sleep( 3 )
-			cmd = "halt"
+			cmd = "sudo halt"
 			subprocess.run(shlex.split(cmd), shell = False )			
 		elif selection == "help":
 			self.exit_out()
 			self.d.infobox("Rebooting...", height=12, width=24, title="Message", no_shadow=True )
 			time.sleep( 2 )
-			cmd = "reboot"
+			cmd = "sudo reboot"
 			subprocess.run(shlex.split(cmd), shell = False )			
 		else:
 			self.main_menu()
@@ -117,7 +121,6 @@ def main():
 	pm = proc_mgr()
 	pm.setup()
 	pm.splash()
-	pm.main_menu()
 	pm.block_cursor()
 	sys.exit()
 
