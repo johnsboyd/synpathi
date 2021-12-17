@@ -84,7 +84,9 @@ class proc_mgr(object):
         load = subprocess.check_output(['uptime']).decode('utf-8').split(":")[-1].replace(',', '').rstrip()
         free = subprocess.check_output(['free','-m']).decode('utf-8').split(":")[1].split()
         dfree = subprocess.check_output(['df','-h']).decode('utf-8').split("/")[2].split()
-        info_text = 'IP: {}\nLoad:{}\nMem: {}/{}\nDisk: {}/{}'.format(ipaddress,load,free[1],free[0],dfree[2],dfree[1])
+        temp = subprocess.check_output(['vcgencmd','measure_temp']).decode('utf-8').split("=")[1]
+        clock = subprocess.check_output(['vcgencmd','measure_clock','arm']).decode('utf-8').split("=")[1] 
+        info_text = 'IP: {}\nLoad:{}\nMem: {}/{}\nDisk: {}/{}\nTemp: {}Speed: {} Mhz'.format(ipaddress,load,free[1],free[0],dfree[2],dfree[1],temp,int(clock)/1000000)
         self.d.msgbox(info_text, height=12, width=24, exit_label="ok", no_cancel=True, no_shadow=True)
         self.main_menu()
 
