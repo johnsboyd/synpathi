@@ -1,0 +1,5 @@
+#N canvas 564 312 450 300 10;
+#X obj 94 46 Drums;
+#X obj 93 85 Guitar;
+#X obj 167 46 BassCtl;
+#X obj 169 83 Keys;
